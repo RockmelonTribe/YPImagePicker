@@ -133,9 +133,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
     @objc
     func multipleSelectionButtonTapped() {
         
-        if !multipleSelectionEnabled {
-            selection.removeAll()
-        }
+        selection.removeAll()
         
         // Prevent desactivating multiple selection when using `minNumberOfItems`
         if YPConfig.library.minNumberOfItems > 1 && multipleSelectionEnabled {
@@ -143,23 +141,10 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         }
         
         multipleSelectionEnabled = !multipleSelectionEnabled
-
-        if multipleSelectionEnabled {
-            if selection.isEmpty {
-                let asset = mediaManager.fetchResult[currentlySelectedIndex]
-                selection = [
-                    YPLibrarySelection(index: currentlySelectedIndex,
-                                       cropRect: v.currentCropRect(),
-                                       scrollViewContentOffset: v.assetZoomableView!.contentOffset,
-                                       scrollViewZoomScale: v.assetZoomableView!.zoomScale,
-                                       assetIdentifier: asset.localIdentifier)
-                ]
-            }
-        } else {
-            selection.removeAll()
+        if !multipleSelectionEnabled {
             addToSelection(indexPath: IndexPath(row: currentlySelectedIndex, section: 0))
         }
-
+        
         v.assetViewContainer.setMultipleSelectionMode(on: multipleSelectionEnabled)
         v.collectionView.reloadData()
         checkLimit()
